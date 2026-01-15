@@ -32,22 +32,23 @@ This deployment uses real USDC and mETH tokens on Mantle Sepolia testnet for pro
 
 ### Mock Token Deployment (For Testing Only)
 
-**Deployed on**: 2024 (Previous deployment)
+**Deployed on**: 2026-01-15
+**Status**: ✅ All contracts initialized and ready to use!
 
 This deployment includes mock USDC and mETH tokens for isolated testing.
 
 | Contract              | Address                                                                                                                                | Explorer                                                                                         |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **MockUSDC**          | [`0xBb5419001EF40A75b5EDc7b10449BFE52D605762`](https://explorer.sepolia.mantle.xyz/address/0xBb5419001EF40A75b5EDc7b10449BFE52D605762) | [View →](https://explorer.sepolia.mantle.xyz/address/0xBb5419001EF40A75b5EDc7b10449BFE52D605762) |
-| **MockMETH**          | [`0x9A44Ca8180732D7D30f1d01514Bc69450C33eae2`](https://explorer.sepolia.mantle.xyz/address/0x9A44Ca8180732D7D30f1d01514Bc69450C33eae2) | [View →](https://explorer.sepolia.mantle.xyz/address/0x9A44Ca8180732D7D30f1d01514Bc69450C33eae2) |
-| **SeniorVault**       | [`0x0E8fc3535aF2Df5c5a73AEFf2dDc6B6D34410Af8`](https://explorer.sepolia.mantle.xyz/address/0x0E8fc3535aF2Df5c5a73AEFf2dDc6B6D34410Af8) | [View →](https://explorer.sepolia.mantle.xyz/address/0x0E8fc3535aF2Df5c5a73AEFf2dDc6B6D34410Af8) |
-| **JuniorVault**       | [`0xeE3Aaf06b1633837ad31D98d124Cc7CC107dCB08`](https://explorer.sepolia.mantle.xyz/address/0xeE3Aaf06b1633837ad31D98d124Cc7CC107dCB08) | [View →](https://explorer.sepolia.mantle.xyz/address/0xeE3Aaf06b1633837ad31D98d124Cc7CC107dCB08) |
-| **CoreVault**         | [`0xeD70c309127Aff79289E62976980eFDBcbBb0899`](https://explorer.sepolia.mantle.xyz/address/0xeD70c309127Aff79289E62976980eFDBcbBb0899) | [View →](https://explorer.sepolia.mantle.xyz/address/0xeD70c309127Aff79289E62976980eFDBcbBb0899) |
-| **EpochManager**      | [`0x14F6933Af60d3F9ca661630b7C3eD923821389B6`](https://explorer.sepolia.mantle.xyz/address/0x14F6933Af60d3F9ca661630b7C3eD923821389B6) | [View →](https://explorer.sepolia.mantle.xyz/address/0x14F6933Af60d3F9ca661630b7C3eD923821389B6) |
-| **SafetyModule**      | [`0x8db86Eb5f494ccDdf94BBc4967288fB85947A68C`](https://explorer.sepolia.mantle.xyz/address/0x8db86Eb5f494ccDdf94BBc4967288fB85947A68C) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8db86Eb5f494ccDdf94BBc4967288fB85947A68C) |
-| **DOORRateOracle**    | [`0xd1812392885dB8B9633e96F79302aFD6ac1C944a`](https://explorer.sepolia.mantle.xyz/address/0xd1812392885dB8B9633e96F79302aFD6ac1C944a) | [View →](https://explorer.sepolia.mantle.xyz/address/0xd1812392885dB8B9633e96F79302aFD6ac1C944a) |
-| **VaultStrategy**     | [`0xdB367615AF9A3a3Ab894065d08C0A35a6171aF22`](https://explorer.sepolia.mantle.xyz/address/0xdB367615AF9A3a3Ab894065d08C0A35a6171aF22) | [View →](https://explorer.sepolia.mantle.xyz/address/0xdB367615AF9A3a3Ab894065d08C0A35a6171aF22) |
-| **MockYieldStrategy** | [`0x3627513D086cD14F1e4E69D391ABCC5EB5489e23`](https://explorer.sepolia.mantle.xyz/address/0x3627513D086cD14F1e4E69D391ABCC5EB5489e23) | [View →](https://explorer.sepolia.mantle.xyz/address/0x3627513D086cD14F1e4E69D391ABCC5EB5489e23) |
+| **MockUSDC**          | [`0xa9fd59bf5009da2d002a474309ca38a8d8686f6a`](https://explorer.sepolia.mantle.xyz/address/0xa9fd59bf5009da2d002a474309ca38a8d8686f6a) | [View →](https://explorer.sepolia.mantle.xyz/address/0xa9fd59bf5009da2d002a474309ca38a8d8686f6a) |
+| **MockMETH**          | [`0xac8fc1d5593ada635c5569e35534bfab1ab2fedc`](https://explorer.sepolia.mantle.xyz/address/0xac8fc1d5593ada635c5569e35534bfab1ab2fedc) | [View →](https://explorer.sepolia.mantle.xyz/address/0xac8fc1d5593ada635c5569e35534bfab1ab2fedc) |
+| **SeniorVault**       | [`0x03f4903c3fcf0cb23bee2c11531afb8a1307ce91`](https://explorer.sepolia.mantle.xyz/address/0x03f4903c3fcf0cb23bee2c11531afb8a1307ce91) | [View →](https://explorer.sepolia.mantle.xyz/address/0x03f4903c3fcf0cb23bee2c11531afb8a1307ce91) |
+| **JuniorVault**       | [`0x694c667c3b7ba5620c68fe1cc3b308eed26afc6e`](https://explorer.sepolia.mantle.xyz/address/0x694c667c3b7ba5620c68fe1cc3b308eed26afc6e) | [View →](https://explorer.sepolia.mantle.xyz/address/0x694c667c3b7ba5620c68fe1cc3b308eed26afc6e) |
+| **CoreVault**         | [`0x8d3ed9a02d3f1e05f68a306037edaf9a54a16105`](https://explorer.sepolia.mantle.xyz/address/0x8d3ed9a02d3f1e05f68a306037edaf9a54a16105) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8d3ed9a02d3f1e05f68a306037edaf9a54a16105) |
+| **EpochManager**      | [`0xdc0f912aa970f2a89381985a8e0ea3128e754748`](https://explorer.sepolia.mantle.xyz/address/0xdc0f912aa970f2a89381985a8e0ea3128e754748) | [View →](https://explorer.sepolia.mantle.xyz/address/0xdc0f912aa970f2a89381985a8e0ea3128e754748) |
+| **SafetyModule**      | [`0xab5fd152973f5430991df6c5b74a5559ffa0d189`](https://explorer.sepolia.mantle.xyz/address/0xab5fd152973f5430991df6c5b74a5559ffa0d189) | [View →](https://explorer.sepolia.mantle.xyz/address/0xab5fd152973f5430991df6c5b74a5559ffa0d189) |
+| **DOORRateOracle**    | [`0xe76e27759b2416ec7c9ddf8ed7a58e61030876a4`](https://explorer.sepolia.mantle.xyz/address/0xe76e27759b2416ec7c9ddf8ed7a58e61030876a4) | [View →](https://explorer.sepolia.mantle.xyz/address/0xe76e27759b2416ec7c9ddf8ed7a58e61030876a4) |
+| **VaultStrategy**     | [`0xdd84c599f3b9a12d7f8e583539f11a3e1d9224df`](https://explorer.sepolia.mantle.xyz/address/0xdd84c599f3b9a12d7f8e583539f11a3e1d9224df) | [View →](https://explorer.sepolia.mantle.xyz/address/0xdd84c599f3b9a12d7f8e583539f11a3e1d9224df) |
+| **MockYieldStrategy** | [`0x403e548ec79ade195db7e7abaa0eb203bbaa1db0`](https://explorer.sepolia.mantle.xyz/address/0x403e548ec79ade195db7e7abaa0eb203bbaa1db0) | [View →](https://explorer.sepolia.mantle.xyz/address/0x403e548ec79ade195db7e7abaa0eb203bbaa1db0) |
 
 ---
 
@@ -539,6 +540,48 @@ npm run verify:testnet <CONTRACT_ADDRESS> <CONSTRUCTOR_ARGS>
 npm run verify:mainnet <CONTRACT_ADDRESS> <CONSTRUCTOR_ARGS>
 ```
 
+### Initialization Scripts
+
+If deployment is interrupted or initialization fails, use these recovery scripts:
+
+#### Initialize CoreVault and EpochManager
+
+If these two core contracts failed to initialize during deployment:
+
+```bash
+# Initialize CoreVault and EpochManager on testnet
+npm run init:core-epoch
+
+# Or run directly
+npx hardhat run scripts/hardhat/initialize-core-epoch.ts --network mantleTestnet
+```
+
+This script will:
+- Check if CoreVault is initialized
+- Check if EpochManager is initialized
+- Initialize any uninitialized contracts
+- Skip already initialized contracts
+
+#### Recover Partial Deployment
+
+If deployment was interrupted and multiple contracts need initialization:
+
+```bash
+# Recover partial deployment on testnet
+npm run recover:deployment
+
+# Or run directly
+npx hardhat run scripts/hardhat/recover-partial-deployment.ts --network mantleTestnet
+```
+
+This script will:
+- Check all contracts (SeniorVault, JuniorVault, CoreVault, EpochManager, VaultStrategy)
+- Initialize any uninitialized contracts
+- Configure roles and permissions
+- Provide manual instructions if automatic initialization fails
+
+**Note**: Update the contract addresses in these scripts before running them.
+
 ---
 
 ## 📝 Usage Examples
@@ -632,16 +675,16 @@ const publicClient = createPublicClient({
   transport: http('https://rpc.sepolia.mantle.xyz'),
 });
 
-// Read senior vault stats
+// Read senior vault stats (using latest mock deployment)
 const seniorAPY = await publicClient.readContract({
-  address: '0x0E8fc3535aF2Df5c5a73AEFf2dDc6B6D34410Af8',
+  address: '0x03f4903c3fcf0cb23bee2c11531afb8a1307ce91',
   abi: SeniorVaultABI,
   functionName: 'currentAPY',
 });
 
 // Deposit to senior vault
 const { hash } = await walletClient.writeContract({
-  address: '0x0E8fc3535aF2Df5c5a73AEFf2dDc6B6D34410Af8',
+  address: '0x03f4903c3fcf0cb23bee2c11531afb8a1307ce91',
   abi: SeniorVaultABI,
   functionName: 'deposit',
   args: [amount, userAddress],
