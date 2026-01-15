@@ -80,31 +80,31 @@ async function main() {
   // Get contract instances
   const seniorVault = await hre.viem.getContractAt(
     'SeniorVault',
-    ADDRESSES.SeniorVault as `0x${string}`
+    ADDRESSES.SeniorVault as `0x${string}`,
   );
   const juniorVault = await hre.viem.getContractAt(
     'JuniorVault',
-    ADDRESSES.JuniorVault as `0x${string}`
+    ADDRESSES.JuniorVault as `0x${string}`,
   );
   const coreVault = await hre.viem.getContractAt(
     'CoreVault',
-    ADDRESSES.CoreVault as `0x${string}`
+    ADDRESSES.CoreVault as `0x${string}`,
   );
   const epochManager = await hre.viem.getContractAt(
     'EpochManager',
-    ADDRESSES.EpochManager as `0x${string}`
+    ADDRESSES.EpochManager as `0x${string}`,
   );
   const vaultStrategy = await hre.viem.getContractAt(
     'VaultStrategy',
-    ADDRESSES.VaultStrategy as `0x${string}`
+    ADDRESSES.VaultStrategy as `0x${string}`,
   );
   const mockYieldStrategy = await hre.viem.getContractAt(
     'MockYieldStrategy',
-    ADDRESSES.MockYieldStrategy as `0x${string}`
+    ADDRESSES.MockYieldStrategy as `0x${string}`,
   );
   const safetyModule = await hre.viem.getContractAt(
     'SafetyModule',
-    ADDRESSES.SafetyModule as `0x${string}`
+    ADDRESSES.SafetyModule as `0x${string}`,
   );
 
   // ============================================================================
@@ -119,7 +119,9 @@ async function main() {
     console.log(`SeniorVault initialized: ${seniorInitialized}`);
     if (!seniorInitialized) {
       console.log('Initializing SeniorVault...');
-      await seniorVault.write.initialize([ADDRESSES.CoreVault as `0x${string}`]);
+      await seniorVault.write.initialize([
+        ADDRESSES.CoreVault as `0x${string}`,
+      ]);
       console.log('✓ SeniorVault initialized');
     }
   } catch (e) {
@@ -134,7 +136,9 @@ async function main() {
       console.log('Initializing JuniorVault...');
       // Add a delay and retry logic
       await new Promise((resolve) => setTimeout(resolve, 5000));
-      await juniorVault.write.initialize([ADDRESSES.CoreVault as `0x${string}`]);
+      await juniorVault.write.initialize([
+        ADDRESSES.CoreVault as `0x${string}`,
+      ]);
       console.log('✓ JuniorVault initialized');
     }
   } catch (e) {
@@ -178,7 +182,9 @@ async function main() {
     console.log(`VaultStrategy initialized: ${strategyInitialized}`);
     if (!strategyInitialized) {
       console.log('Initializing VaultStrategy...');
-      await vaultStrategy.write.initialize([ADDRESSES.CoreVault as `0x${string}`]);
+      await vaultStrategy.write.initialize([
+        ADDRESSES.CoreVault as `0x${string}`,
+      ]);
       console.log('✓ VaultStrategy initialized');
     }
   } catch (e) {
@@ -191,7 +197,9 @@ async function main() {
     console.log(`MockYieldStrategy owner: ${currentOwner}`);
     if (currentOwner.toLowerCase() !== ADDRESSES.CoreVault.toLowerCase()) {
       console.log('Setting MockYieldStrategy owner...');
-      await mockYieldStrategy.write.setOwner([ADDRESSES.CoreVault as `0x${string}`]);
+      await mockYieldStrategy.write.setOwner([
+        ADDRESSES.CoreVault as `0x${string}`,
+      ]);
       console.log('✓ MockYieldStrategy owner set');
     }
   } catch (e) {
@@ -209,26 +217,38 @@ async function main() {
     const STRATEGY_ROLE = await coreVault.read.STRATEGY_ROLE();
 
     // Grant roles if not already granted
-    const hasKeeperRole = await coreVault.read.hasRole([KEEPER_ROLE, deployerAddress]);
+    const hasKeeperRole = await coreVault.read.hasRole([
+      KEEPER_ROLE,
+      deployerAddress,
+    ]);
     if (!hasKeeperRole) {
       await coreVault.write.grantRole([KEEPER_ROLE, deployerAddress]);
       console.log('KEEPER_ROLE granted to deployer on CoreVault');
     }
 
-    const hasStrategyRole = await coreVault.read.hasRole([STRATEGY_ROLE, deployerAddress]);
+    const hasStrategyRole = await coreVault.read.hasRole([
+      STRATEGY_ROLE,
+      deployerAddress,
+    ]);
     if (!hasStrategyRole) {
       await coreVault.write.grantRole([STRATEGY_ROLE, deployerAddress]);
       console.log('STRATEGY_ROLE granted to deployer on CoreVault');
     }
 
     // Other roles...
-    const hasEpochKeeperRole = await epochManager.read.hasRole([KEEPER_ROLE, deployerAddress]);
+    const hasEpochKeeperRole = await epochManager.read.hasRole([
+      KEEPER_ROLE,
+      deployerAddress,
+    ]);
     if (!hasEpochKeeperRole) {
       await epochManager.write.grantRole([KEEPER_ROLE, deployerAddress]);
       console.log('KEEPER_ROLE granted to deployer on EpochManager');
     }
 
-    const hasSafetyKeeperRole = await safetyModule.read.hasRole([KEEPER_ROLE, deployerAddress]);
+    const hasSafetyKeeperRole = await safetyModule.read.hasRole([
+      KEEPER_ROLE,
+      deployerAddress,
+    ]);
     if (!hasSafetyKeeperRole) {
       await safetyModule.write.grantRole([KEEPER_ROLE, deployerAddress]);
       console.log('KEEPER_ROLE granted to deployer on SafetyModule');
@@ -273,7 +293,7 @@ async function main() {
 
   const deploymentPath = path.join(
     deploymentsDir,
-    `${hre.network.name}-deployment.json`
+    `${hre.network.name}-deployment.json`,
   );
   fs.writeFileSync(deploymentPath, JSON.stringify(deployment, null, 2));
 
@@ -283,7 +303,9 @@ async function main() {
   console.log('\nDeployment saved to:', deploymentPath);
   console.log('\nNext steps:');
   console.log('1. If JuniorVault failed to initialize, initialize manually:');
-  console.log(`   - Go to: https://explorer.sepolia.mantle.xyz/address/${ADDRESSES.JuniorVault}#writeContract`);
+  console.log(
+    `   - Go to: https://explorer.sepolia.mantle.xyz/address/${ADDRESSES.JuniorVault}#writeContract`,
+  );
   console.log(`   - Call initialize(${ADDRESSES.CoreVault})`);
   console.log('2. Update frontend addresses.ts with these addresses');
 }

@@ -621,16 +621,16 @@ mETH: 0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6
 
 #### 📝 Deployment Comparison
 
-| Feature             | Mock Tokens                | Real Tokens                        |
-| ------------------- | -------------------------- | ---------------------------------- |
-| **Availability**    | ✅ Instant                 | ❌ Extremely difficult             |
-| **Token Balance**   | ✅ Unlimited               | ❌ Insufficient for testing        |
-| **Setup Time**      | ⚡ < 5 minutes             | ⏱️ Hours/Days                      |
-| **Cost**            | 💰 Only gas                | 💰 Gas + bridging fees             |
-| **Testing**         | ✅ Comprehensive           | ❌ Limited by insufficient balance |
-| **Multiple Tests**  | ✅ Unlimited               | ❌ Can't get more tokens           |
-| **Edge Cases**      | ✅ Test with large amounts | ❌ Balance too small               |
-| **Recommended**     | ✅ **YES**                 | ❌ Not practical                   |
+| Feature            | Mock Tokens                | Real Tokens                        |
+| ------------------ | -------------------------- | ---------------------------------- |
+| **Availability**   | ✅ Instant                 | ❌ Extremely difficult             |
+| **Token Balance**  | ✅ Unlimited               | ❌ Insufficient for testing        |
+| **Setup Time**     | ⚡ < 5 minutes             | ⏱️ Hours/Days                      |
+| **Cost**           | 💰 Only gas                | 💰 Gas + bridging fees             |
+| **Testing**        | ✅ Comprehensive           | ❌ Limited by insufficient balance |
+| **Multiple Tests** | ✅ Unlimited               | ❌ Can't get more tokens           |
+| **Edge Cases**     | ✅ Test with large amounts | ❌ Balance too small               |
+| **Recommended**    | ✅ **YES**                 | ❌ Not practical                   |
 
 ---
 
@@ -671,6 +671,7 @@ npm run deploy:testnet:mock
 ```
 
 **That's it!** No need to:
+
 - ❌ Hunt for testnet USDC (no faucet with sufficient balance)
 - ❌ Bridge mETH tokens (complex and time-consuming)
 - ❌ Worry about running out of tokens (unlimited supply with mock!)

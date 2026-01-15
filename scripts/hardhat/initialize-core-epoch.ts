@@ -37,12 +37,12 @@ async function main() {
   // Get contract instances
   const coreVault = await hre.viem.getContractAt(
     'CoreVault',
-    ADDRESSES.CoreVault as `0x${string}`
+    ADDRESSES.CoreVault as `0x${string}`,
   );
 
   const epochManager = await hre.viem.getContractAt(
     'EpochManager',
-    ADDRESSES.EpochManager as `0x${string}`
+    ADDRESSES.EpochManager as `0x${string}`,
   );
 
   // Initialize CoreVault
