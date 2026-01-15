@@ -4,6 +4,38 @@
 
 ## 🚀 Deployed Contracts (Mantle Sepolia Testnet)
 
+### Production Deployment (Using Real Testnet Tokens)
+
+**Deployed on**: 2026-01-15
+
+This deployment uses real USDC and mETH tokens on Mantle Sepolia testnet for production-like testing.
+
+| Contract              | Address                                                                                                                                | Explorer                                                                                         |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **SeniorVault**       | [`0x34BC889a143870bBd8538EAe6421cA4c62e84bc3`](https://explorer.sepolia.mantle.xyz/address/0x34BC889a143870bBd8538EAe6421cA4c62e84bc3) | [View →](https://explorer.sepolia.mantle.xyz/address/0x34BC889a143870bBd8538EAe6421cA4c62e84bc3) |
+| **JuniorVault**       | [`0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e`](https://explorer.sepolia.mantle.xyz/address/0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e) |
+| **CoreVault**         | [`0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F`](https://explorer.sepolia.mantle.xyz/address/0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F) | [View →](https://explorer.sepolia.mantle.xyz/address/0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F) |
+| **EpochManager**      | [`0x2956e44668E4026D499D46Ad7eCB1312EA8484aa`](https://explorer.sepolia.mantle.xyz/address/0x2956e44668E4026D499D46Ad7eCB1312EA8484aa) | [View →](https://explorer.sepolia.mantle.xyz/address/0x2956e44668E4026D499D46Ad7eCB1312EA8484aa) |
+| **SafetyModule**      | [`0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55`](https://explorer.sepolia.mantle.xyz/address/0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55) | [View →](https://explorer.sepolia.mantle.xyz/address/0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55) |
+| **DOORRateOracle**    | [`0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71`](https://explorer.sepolia.mantle.xyz/address/0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71) |
+| **VaultStrategy**     | [`0x92273a6629A87094E4A2525a7AcDE00eD3f025D3`](https://explorer.sepolia.mantle.xyz/address/0x92273a6629A87094E4A2525a7AcDE00eD3f025D3) | [View →](https://explorer.sepolia.mantle.xyz/address/0x92273a6629A87094E4A2525a7AcDE00eD3f025D3) |
+| **MockYieldStrategy** | [`0x0C3701a4d3F95af12Ed830caD9082aF896D92De9`](https://explorer.sepolia.mantle.xyz/address/0x0C3701a4d3F95af12Ed830caD9082aF896D92De9) | [View →](https://explorer.sepolia.mantle.xyz/address/0x0C3701a4d3F95af12Ed830caD9082aF896D92De9) |
+
+**Token Addresses (External)**:
+
+| Token    | Address                                                                                                                                | Explorer                                                                                         |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **USDC** | [`0x9a54bad93a00bf1232d4e636f5e53055dc0b8238`](https://explorer.sepolia.mantle.xyz/address/0x9a54bad93a00bf1232d4e636f5e53055dc0b8238) | [View →](https://explorer.sepolia.mantle.xyz/address/0x9a54bad93a00bf1232d4e636f5e53055dc0b8238) |
+| **mETH** | [`0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6`](https://explorer.sepolia.mantle.xyz/address/0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6) | [View →](https://explorer.sepolia.mantle.xyz/address/0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6) |
+
+---
+
+### Mock Token Deployment (For Testing Only)
+
+**Deployed on**: 2024 (Previous deployment)
+
+This deployment includes mock USDC and mETH tokens for isolated testing.
+
 | Contract              | Address                                                                                                                                | Explorer                                                                                         |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | **MockUSDC**          | [`0xBb5419001EF40A75b5EDc7b10449BFE52D605762`](https://explorer.sepolia.mantle.xyz/address/0xBb5419001EF40A75b5EDc7b10449BFE52D605762) | [View →](https://explorer.sepolia.mantle.xyz/address/0xBb5419001EF40A75b5EDc7b10449BFE52D605762) |
@@ -17,9 +49,16 @@
 | **VaultStrategy**     | [`0xdB367615AF9A3a3Ab894065d08C0A35a6171aF22`](https://explorer.sepolia.mantle.xyz/address/0xdB367615AF9A3a3Ab894065d08C0A35a6171aF22) | [View →](https://explorer.sepolia.mantle.xyz/address/0xdB367615AF9A3a3Ab894065d08C0A35a6171aF22) |
 | **MockYieldStrategy** | [`0x3627513D086cD14F1e4E69D391ABCC5EB5489e23`](https://explorer.sepolia.mantle.xyz/address/0x3627513D086cD14F1e4E69D391ABCC5EB5489e23) | [View →](https://explorer.sepolia.mantle.xyz/address/0x3627513D086cD14F1e4E69D391ABCC5EB5489e23) |
 
+---
+
 **Network**: Mantle Sepolia Testnet (Chain ID: 5003)
 
 **Deployer**: `0xb09b4152D37a05a2f2D73e1f5010014e6aFAFC39`
+
+**Deployment Commands**:
+
+- Production (Real Tokens): `npm run deploy:testnet`
+- Mock (Test Tokens): `npm run deploy:testnet:mock`
 
 ---
 
@@ -427,31 +466,68 @@ npm run test:coverage:forge
 
 ### Deploy
 
+DOOR Protocol provides two deployment modes:
+
+1. **Mock Mode**: Deploys mock USDC and mETH tokens (for testing)
+2. **Testnet Mode**: Uses real testnet tokens (for production-like testing)
+
+#### Testnet Token Addresses (Mantle Sepolia)
+
+```
+USDC: 0x9a54bad93a00bf1232d4e636f5e53055dc0b8238
+mETH: 0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6
+```
+
 #### Local Deployment (Anvil)
 
 ```bash
 # Terminal 1: Start local node
 npm run anvil
 
-# Terminal 2: Deploy contracts
+# Terminal 2: Deploy with mock tokens (Viem)
+npm run deploy:local:mock
+
+# Or deploy with Ethers
+npm run deploy:local:mock:ethers
+
+# Or deploy with Forge
 npm run deploy:forge:local
 ```
 
 #### Testnet Deployment (Mantle Sepolia)
 
+**Option 1: Using Real Testnet Tokens (Recommended)**
+
 ```bash
-# Deploy to testnet
+# Deploy using real USDC and mETH on testnet (Viem)
+npm run deploy:testnet
+
+# Or deploy with Ethers
+npm run deploy:testnet:ethers
+```
+
+**Option 2: Using Mock Tokens**
+
+```bash
+# Deploy with mock USDC and mETH (Viem)
+npm run deploy:testnet:mock
+
+# Or deploy with Ethers
+npm run deploy:testnet:mock:ethers
+
+# Or deploy with Forge (mock tokens)
 npm run deploy:forge:testnet
 
-# Deploy with test token minting
+# Or deploy with Forge and mint test tokens
 npm run deploy:forge:testnet:mint
 ```
 
-#### Mainnet Deployment
+**Important**:
 
-```bash
-npm run deploy:mainnet
-```
+- For real testnet deployment, ensure you have USDC and mETH in your wallet
+- You can get testnet USDC from [Mantle Faucet](https://faucet.sepolia.mantle.xyz/)
+- Mock deployment creates new token contracts but they won't be recognized by other protocols
+- Forge deployments currently only support mock tokens
 
 ### Verify Contracts
 
