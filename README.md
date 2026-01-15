@@ -4,36 +4,19 @@
 
 ## 🚀 Deployed Contracts (Mantle Sepolia Testnet)
 
-### Production Deployment (Using Real Testnet Tokens)
+> **⭐ Recommendation**: Use the **Mock Token Deployment** below for testing, as **obtaining sufficient testnet USDC and mETH balance is extremely difficult** on Mantle Sepolia.
 
-**Deployed on**: 2026-01-15
-
-This deployment uses real USDC and mETH tokens on Mantle Sepolia testnet for production-like testing.
-
-| Contract              | Address                                                                                                                                | Explorer                                                                                         |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **SeniorVault**       | [`0x34BC889a143870bBd8538EAe6421cA4c62e84bc3`](https://explorer.sepolia.mantle.xyz/address/0x34BC889a143870bBd8538EAe6421cA4c62e84bc3) | [View →](https://explorer.sepolia.mantle.xyz/address/0x34BC889a143870bBd8538EAe6421cA4c62e84bc3) |
-| **JuniorVault**       | [`0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e`](https://explorer.sepolia.mantle.xyz/address/0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e) |
-| **CoreVault**         | [`0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F`](https://explorer.sepolia.mantle.xyz/address/0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F) | [View →](https://explorer.sepolia.mantle.xyz/address/0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F) |
-| **EpochManager**      | [`0x2956e44668E4026D499D46Ad7eCB1312EA8484aa`](https://explorer.sepolia.mantle.xyz/address/0x2956e44668E4026D499D46Ad7eCB1312EA8484aa) | [View →](https://explorer.sepolia.mantle.xyz/address/0x2956e44668E4026D499D46Ad7eCB1312EA8484aa) |
-| **SafetyModule**      | [`0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55`](https://explorer.sepolia.mantle.xyz/address/0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55) | [View →](https://explorer.sepolia.mantle.xyz/address/0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55) |
-| **DOORRateOracle**    | [`0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71`](https://explorer.sepolia.mantle.xyz/address/0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71) |
-| **VaultStrategy**     | [`0x92273a6629A87094E4A2525a7AcDE00eD3f025D3`](https://explorer.sepolia.mantle.xyz/address/0x92273a6629A87094E4A2525a7AcDE00eD3f025D3) | [View →](https://explorer.sepolia.mantle.xyz/address/0x92273a6629A87094E4A2525a7AcDE00eD3f025D3) |
-| **MockYieldStrategy** | [`0x0C3701a4d3F95af12Ed830caD9082aF896D92De9`](https://explorer.sepolia.mantle.xyz/address/0x0C3701a4d3F95af12Ed830caD9082aF896D92De9) | [View →](https://explorer.sepolia.mantle.xyz/address/0x0C3701a4d3F95af12Ed830caD9082aF896D92De9) |
-
-**Token Addresses (External)**:
-
-| Token    | Address                                                                                                                                | Explorer                                                                                         |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **USDC** | [`0x9a54bad93a00bf1232d4e636f5e53055dc0b8238`](https://explorer.sepolia.mantle.xyz/address/0x9a54bad93a00bf1232d4e636f5e53055dc0b8238) | [View →](https://explorer.sepolia.mantle.xyz/address/0x9a54bad93a00bf1232d4e636f5e53055dc0b8238) |
-| **mETH** | [`0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6`](https://explorer.sepolia.mantle.xyz/address/0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6) | [View →](https://explorer.sepolia.mantle.xyz/address/0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6) |
-
----
-
-### Mock Token Deployment (For Testing Only)
+### Mock Token Deployment (⭐ RECOMMENDED)
 
 **Deployed on**: 2026-01-15
 **Status**: ✅ All contracts initialized and ready to use!
+
+**Why use this deployment?**
+
+- ✅ **No need to obtain testnet USDC/mETH** (very difficult to get sufficient balance)
+- ✅ **Instant access** to unlimited test tokens
+- ✅ **Full protocol functionality** - same features as production
+- ✅ **Perfect for development**, testing, and demos
 
 This deployment includes mock USDC and mETH tokens for isolated testing.
 
@@ -52,14 +35,42 @@ This deployment includes mock USDC and mETH tokens for isolated testing.
 
 ---
 
+### Production Deployment (Real Testnet Tokens) - ⚠️ NOT RECOMMENDED
+
+**Deployed on**: 2026-01-15
+
+**⚠️ Important**: This deployment uses real USDC and mETH tokens. However, **obtaining sufficient testnet USDC and mETH balance is extremely difficult** on Mantle Sepolia (no reliable faucet, requires complex bridging). Use the Mock Token Deployment above instead.
+
+This deployment was created for integration testing with actual testnet tokens, but is not recommended for general use due to the difficulty of obtaining sufficient token balances for testing.
+
+| Contract              | Address                                                                                                                                | Explorer                                                                                         |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **SeniorVault**       | [`0x34BC889a143870bBd8538EAe6421cA4c62e84bc3`](https://explorer.sepolia.mantle.xyz/address/0x34BC889a143870bBd8538EAe6421cA4c62e84bc3) | [View →](https://explorer.sepolia.mantle.xyz/address/0x34BC889a143870bBd8538EAe6421cA4c62e84bc3) |
+| **JuniorVault**       | [`0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e`](https://explorer.sepolia.mantle.xyz/address/0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8E1A6A3Ba7c5cb4d416Da7Fd376b2BC75227022e) |
+| **CoreVault**         | [`0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F`](https://explorer.sepolia.mantle.xyz/address/0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F) | [View →](https://explorer.sepolia.mantle.xyz/address/0x1601Aa4aE97b999cEd4bbaCF0D4B52f29554846F) |
+| **EpochManager**      | [`0x2956e44668E4026D499D46Ad7eCB1312EA8484aa`](https://explorer.sepolia.mantle.xyz/address/0x2956e44668E4026D499D46Ad7eCB1312EA8484aa) | [View →](https://explorer.sepolia.mantle.xyz/address/0x2956e44668E4026D499D46Ad7eCB1312EA8484aa) |
+| **SafetyModule**      | [`0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55`](https://explorer.sepolia.mantle.xyz/address/0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55) | [View →](https://explorer.sepolia.mantle.xyz/address/0xA08fF559C4Fc41FEf01D26744394dD2d2aa74E55) |
+| **DOORRateOracle**    | [`0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71`](https://explorer.sepolia.mantle.xyz/address/0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71) | [View →](https://explorer.sepolia.mantle.xyz/address/0x8888F236f9ec2B3aD0c07080ba5Ebc1241F70d71) |
+| **VaultStrategy**     | [`0x92273a6629A87094E4A2525a7AcDE00eD3f025D3`](https://explorer.sepolia.mantle.xyz/address/0x92273a6629A87094E4A2525a7AcDE00eD3f025D3) | [View →](https://explorer.sepolia.mantle.xyz/address/0x92273a6629A87094E4A2525a7AcDE00eD3f025D3) |
+| **MockYieldStrategy** | [`0x0C3701a4d3F95af12Ed830caD9082aF896D92De9`](https://explorer.sepolia.mantle.xyz/address/0x0C3701a4d3F95af12Ed830caD9082aF896D92De9) | [View →](https://explorer.sepolia.mantle.xyz/address/0x0C3701a4d3F95af12Ed830caD9082aF896D92De9) |
+
+**Token Addresses (External - Real Testnet Tokens)**:
+
+| Token    | Address                                                                                                                                | Explorer                                                                                         |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **USDC** | [`0x9a54bad93a00bf1232d4e636f5e53055dc0b8238`](https://explorer.sepolia.mantle.xyz/address/0x9a54bad93a00bf1232d4e636f5e53055dc0b8238) | [View →](https://explorer.sepolia.mantle.xyz/address/0x9a54bad93a00bf1232d4e636f5e53055dc0b8238) |
+| **mETH** | [`0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6`](https://explorer.sepolia.mantle.xyz/address/0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6) | [View →](https://explorer.sepolia.mantle.xyz/address/0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6) |
+
+---
+
 **Network**: Mantle Sepolia Testnet (Chain ID: 5003)
 
 **Deployer**: `0xb09b4152D37a05a2f2D73e1f5010014e6aFAFC39`
 
 **Deployment Commands**:
 
-- Production (Real Tokens): `npm run deploy:testnet`
-- Mock (Test Tokens): `npm run deploy:testnet:mock`
+- **Recommended - Mock Tokens**: `npm run deploy:testnet:mock` ⭐ (Unlimited balance!)
+- Production (Real Tokens): `npm run deploy:testnet` ⚠️ (Not practical - insufficient token balance)
 
 ---
 
@@ -467,22 +478,35 @@ npm run test:coverage:forge
 
 ### Deploy
 
-DOOR Protocol provides two deployment modes:
+DOOR Protocol provides two deployment modes for Mantle Sepolia testnet:
 
-1. **Mock Mode**: Deploys mock USDC and mETH tokens (for testing)
-2. **Testnet Mode**: Uses real testnet tokens (for production-like testing)
+#### 🎯 Recommended: Mock Token Deployment
 
-#### Testnet Token Addresses (Mantle Sepolia)
+**Why Mock Tokens?**
 
-```
-USDC: 0x9a54bad93a00bf1232d4e636f5e53055dc0b8238
-mETH: 0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6
-```
+Currently, **obtaining sufficient testnet USDC and mETH balance is extremely difficult** on Mantle Sepolia:
+
+- 🚫 **No reliable USDC faucet** - can't get enough balance for meaningful testing
+- 🚫 **mETH requires complex bridging** - Sepolia ETH → Mantle Bridge → contact Mantle team
+- 🚫 **Limited supply** - even if you get tokens, balance is insufficient for testing
+- ✅ **Mock tokens are instantly available** with unlimited balance
+- ✅ **Full control** over token supply for comprehensive testing
+
+**Use Mock tokens for:**
+
+- Quick testing and development (need sufficient balance)
+- Frontend integration testing (need to test multiple deposits/withdrawals)
+- Protocol functionality testing (need large amounts)
+- Demo and hackathon purposes (instant access)
+
+---
 
 #### Local Deployment (Anvil)
 
+Perfect for local development and testing:
+
 ```bash
-# Terminal 1: Start local node
+# Terminal 1: Start local Hardhat node
 npm run anvil
 
 # Terminal 2: Deploy with mock tokens (Viem)
@@ -495,9 +519,64 @@ npm run deploy:local:mock:ethers
 npm run deploy:forge:local
 ```
 
+**Benefits:**
+
+- ⚡ Instant deployments
+- 🔄 Easy reset and redeploy
+- 💰 Free gas
+- 🛠️ Full debugging capabilities
+
+---
+
 #### Testnet Deployment (Mantle Sepolia)
 
-**Option 1: Using Real Testnet Tokens (Recommended)**
+##### Option 1: Using Mock Tokens (⭐ **RECOMMENDED**)
+
+**This is the recommended approach** due to testnet token availability issues:
+
+```bash
+# Deploy with mock USDC and mETH (Viem - Recommended)
+npm run deploy:testnet:mock
+
+# Or deploy with Ethers
+npm run deploy:testnet:mock:ethers
+
+# Or deploy with Forge
+npm run deploy:forge:testnet
+```
+
+**What happens:**
+
+1. Deploys `MockUSDC` and `MockMETH` contracts **(with unlimited minting capability!)**
+2. Deploys all DOOR Protocol contracts (CoreVault, SeniorVault, JuniorVault, etc.)
+3. Initializes all contracts
+4. **You get unlimited mock tokens for testing** - no balance limitations!
+
+**Mock Token Features:**
+
+```solidity
+// MockUSDC functions
+mint(address to, uint256 amount)  // Mint unlimited tokens to any address
+burn(address from, uint256 amount) // Burn tokens (can always mint more!)
+setYieldRate(uint256 rate)         // Simulate yield generation
+
+// No balance limits - mint as much as you need for testing!
+```
+
+**Latest Mock Deployment:**
+
+```
+MockUSDC:    0xa9fd59bf5009da2d002a474309ca38a8d8686f6a
+MockMETH:    0xac8fc1d5593ada635c5569e35534bfab1ab2fedc
+```
+
+See [Mock Token Deployment](#mock-token-deployment-for-testing-only) section for all addresses.
+
+---
+
+##### Option 2: Using Real Testnet Tokens (⚠️ **NOT RECOMMENDED**)
+
+**Only use if you already have sufficient testnet USDC and mETH balance** (which is extremely rare and difficult to obtain).
 
 ```bash
 # Deploy using real USDC and mETH on testnet (Viem)
@@ -507,28 +586,95 @@ npm run deploy:testnet
 npm run deploy:testnet:ethers
 ```
 
-**Option 2: Using Mock Tokens**
+**Real Token Addresses (Mantle Sepolia):**
 
-```bash
-# Deploy with mock USDC and mETH (Viem)
-npm run deploy:testnet:mock
-
-# Or deploy with Ethers
-npm run deploy:testnet:mock:ethers
-
-# Or deploy with Forge (mock tokens)
-npm run deploy:forge:testnet
-
-# Or deploy with Forge and mint test tokens
-npm run deploy:forge:testnet:mint
+```
+USDC: 0x9a54bad93a00bf1232d4e636f5e53055dc0b8238
+mETH: 0x4Ade8aAa0143526393EcadA836224EF21aBC6ac6
 ```
 
-**Important**:
+**⚠️ Challenges with Real Tokens:**
 
-- For real testnet deployment, ensure you have USDC and mETH in your wallet
-- You can get testnet USDC from [Mantle Faucet](https://faucet.sepolia.mantle.xyz/)
-- Mock deployment creates new token contracts but they won't be recognized by other protocols
-- Forge deployments currently only support mock tokens
+- **No public USDC faucet** - cannot obtain sufficient balance for testing
+- **mETH requires complex bridging process** - time-consuming and unreliable
+- **Very limited supply** - insufficient balance for meaningful protocol testing
+- **Cannot easily reset state** - once tokens are used, can't get more
+- **Testing limitations** - can't test edge cases with large amounts
+
+**How to get real testnet tokens (if needed):**
+
+1. **USDC**:
+   - No reliable public faucet available
+   - **Insufficient balance** even from alternative sources
+   - **Recommendation: Use Mock tokens instead** ⭐
+
+2. **mETH**:
+   - Get Sepolia ETH from [Sepolia Faucet](https://sepoliafaucet.com/)
+   - Bridge to Mantle Sepolia via [Mantle Bridge](https://app.mantle.xyz/bridge?network=sepolia)
+   - Contact Mantle team for mETH tokens
+   - **Problem: Still insufficient balance for comprehensive testing**
+
+3. **Alternative**: Ask in Mantle Discord for testnet tokens
+   - **Limitation: Balance is still very limited** and not suitable for repeated testing
+
+---
+
+#### 📝 Deployment Comparison
+
+| Feature             | Mock Tokens                | Real Tokens                        |
+| ------------------- | -------------------------- | ---------------------------------- |
+| **Availability**    | ✅ Instant                 | ❌ Extremely difficult             |
+| **Token Balance**   | ✅ Unlimited               | ❌ Insufficient for testing        |
+| **Setup Time**      | ⚡ < 5 minutes             | ⏱️ Hours/Days                      |
+| **Cost**            | 💰 Only gas                | 💰 Gas + bridging fees             |
+| **Testing**         | ✅ Comprehensive           | ❌ Limited by insufficient balance |
+| **Multiple Tests**  | ✅ Unlimited               | ❌ Can't get more tokens           |
+| **Edge Cases**      | ✅ Test with large amounts | ❌ Balance too small               |
+| **Recommended**     | ✅ **YES**                 | ❌ Not practical                   |
+
+---
+
+#### 🎓 For Developers
+
+**Use Mock tokens if:**
+
+- ✅ You're developing or testing the protocol **(you need sufficient balance!)**
+- ✅ You need quick iterations **(can't get more real tokens easily)**
+- ✅ You want to test edge cases **(large amounts, multiple deposits/withdrawals)**
+- ✅ You need to test yield generation **(requires significant balance)**
+- ✅ You're doing a demo or hackathon **(instant access with no balance limits)**
+- ✅ You need to test repeatedly **(unlimited token supply)**
+
+**Use Real tokens only if:**
+
+- You're doing final integration testing **(and have sufficient balance already)**
+- You need to test with actual DeFi protocols on testnet
+- You already have sufficient testnet token balance **(which is extremely rare)**
+- **⚠️ Warning**: Even if you get real tokens, the balance will likely be insufficient for comprehensive testing
+
+---
+
+#### 🚀 Quick Start (Recommended Path)
+
+```bash
+# 1. Get testnet MNT for gas
+# Visit: https://faucet.sepolia.mantle.xyz/
+
+# 2. Deploy with mock tokens (includes unlimited USDC/mETH balance!)
+npm run deploy:testnet:mock
+
+# 3. Copy the deployed addresses to frontend
+# Addresses are saved in: scripts/deployments/mantleTestnet-deployment.json
+
+# 4. Start testing with unlimited token balance!
+# Mock tokens give you full control - no balance limitations!
+```
+
+**That's it!** No need to:
+- ❌ Hunt for testnet USDC (no faucet with sufficient balance)
+- ❌ Bridge mETH tokens (complex and time-consuming)
+- ❌ Worry about running out of tokens (unlimited supply with mock!)
+- ✅ Just deploy and test immediately with unlimited balance!
 
 ### Verify Contracts
 
@@ -557,6 +703,7 @@ npx hardhat run scripts/hardhat/initialize-core-epoch.ts --network mantleTestnet
 ```
 
 This script will:
+
 - Check if CoreVault is initialized
 - Check if EpochManager is initialized
 - Initialize any uninitialized contracts
@@ -575,6 +722,7 @@ npx hardhat run scripts/hardhat/recover-partial-deployment.ts --network mantleTe
 ```
 
 This script will:
+
 - Check all contracts (SeniorVault, JuniorVault, CoreVault, EpochManager, VaultStrategy)
 - Initialize any uninitialized contracts
 - Configure roles and permissions
