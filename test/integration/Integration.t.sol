@@ -12,7 +12,7 @@ import {IEpochManager} from "../../src/epoch/interfaces/IEpochManager.sol";
 import {SafetyModule} from "../../src/safety/SafetyModule.sol";
 import {DOORRateOracle} from "../../src/oracle/DOORRateOracle.sol";
 import {VaultStrategy} from "../../src/strategy/VaultStrategy.sol";
-import {MockYieldStrategy} from "../../src/strategy/MockYieldStrategy.sol";
+import {MockVaultStrategy} from "../../src/strategy/MockVaultStrategy.sol";
 import {SafetyLib} from "../../src/libraries/SafetyLib.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -30,7 +30,7 @@ contract IntegrationTest is Test {
     SafetyModule public safetyModule;
     DOORRateOracle public rateOracle;
     VaultStrategy public strategy;
-    MockYieldStrategy public mockStrategy;
+    MockVaultStrategy public mockStrategy;
 
     address public deployer;
     address public treasury;
@@ -43,6 +43,9 @@ contract IntegrationTest is Test {
 
     bytes32 public constant KEEPER_ROLE = keccak256("KEEPER_ROLE");
     bytes32 public constant STRATEGY_ROLE = keccak256("STRATEGY_ROLE");
+    bytes32 public constant ORACLE_ROLE = keccak256("ORACLE_ROLE");
+    bytes32 public constant EMERGENCY_ROLE = keccak256("EMERGENCY_ROLE");
+    bytes32 public constant VAULT_ROLE = keccak256("VAULT_ROLE");
 
     function setUp() public {
         deployer = address(this);
@@ -62,7 +65,7 @@ contract IntegrationTest is Test {
         safetyModule = new SafetyModule(address(coreVault));
         rateOracle = new DOORRateOracle();
         strategy = new VaultStrategy(address(usdc), address(meth));
-        mockStrategy = new MockYieldStrategy(address(usdc));
+        mockStrategy = new MockVaultStrategy(address(usdc), address(meth));
 
         // Initialize all contracts
         seniorVault.initialize(address(coreVault));
@@ -70,15 +73,19 @@ contract IntegrationTest is Test {
         coreVault.initialize(address(mockStrategy), address(rateOracle), treasury);
         epochManager.initialize();
         strategy.initialize(address(coreVault));
-        mockStrategy.setOwner(address(coreVault));
+        mockStrategy.initialize(address(coreVault));
 
         // Setup roles
         coreVault.grantRole(KEEPER_ROLE, keeper);
         coreVault.grantRole(KEEPER_ROLE, address(epochManager)); // EpochManager calls harvest()
         coreVault.grantRole(STRATEGY_ROLE, deployer);
+        coreVault.grantRole(EMERGENCY_ROLE, deployer);
         epochManager.grantRole(KEEPER_ROLE, keeper);
         safetyModule.grantRole(KEEPER_ROLE, keeper);
         strategy.grantRole(KEEPER_ROLE, keeper);
+        mockStrategy.grantRole(KEEPER_ROLE, keeper);
+        mockStrategy.grantRole(VAULT_ROLE, address(coreVault));
+        rateOracle.grantRole(ORACLE_ROLE, deployer);
 
         // Mint tokens to users
         usdc.mint(alice, INITIAL_BALANCE);
@@ -357,7 +364,7 @@ contract IntegrationTest is Test {
 
         // Grant vault role to this contract for testing
         vm.prank(deployer);
-        strategy.grantRole(keccak256("VAULT_ROLE"), address(this));
+        strategy.grantRole(VAULT_ROLE, address(this));
 
         // Deposit (as deployer)
         usdc.approve(address(strategy), depositAmount);
@@ -431,5 +438,91 @@ contract IntegrationTest is Test {
 
         uint256 received = aliceBalanceAfter - aliceBalanceBefore;
         assertTrue(received >= 100_000e6); // At least principal
+    }
+
+    // ============ Emergency Role Tests ============
+
+    function test_EmergencyWithdrawScenario() public {
+        uint256 seniorDeposit = 100_000e6;
+        uint256 juniorDeposit = 25_000e6;
+
+        // Users deposit
+        vm.startPrank(alice);
+        usdc.approve(address(seniorVault), seniorDeposit);
+        seniorVault.deposit(seniorDeposit, alice);
+        vm.stopPrank();
+
+        vm.startPrank(bob);
+        usdc.approve(address(juniorVault), juniorDeposit);
+        juniorVault.deposit(juniorDeposit, bob);
+        vm.stopPrank();
+
+        // Deploy to strategy
+        usdc.mint(address(coreVault), seniorDeposit + juniorDeposit);
+        vm.prank(deployer);
+        coreVault.deployToStrategy(seniorDeposit + juniorDeposit);
+
+        // Emergency situation - withdraw all funds
+        uint256 treasuryBalanceBefore = usdc.balanceOf(treasury);
+
+        vm.prank(deployer);
+        coreVault.emergencyWithdraw();
+
+        // Should be in emergency mode
+        assertTrue(coreVault.emergencyMode());
+
+        // Funds should be in treasury
+        uint256 treasuryBalanceAfter = usdc.balanceOf(treasury);
+        assertTrue(treasuryBalanceAfter > treasuryBalanceBefore);
+    }
+
+    function test_DisableEmergencyMode() public {
+        // Trigger emergency mode
+        vm.startPrank(deployer);
+        coreVault.emergencyWithdraw();
+        assertTrue(coreVault.emergencyMode());
+
+        // Disable emergency mode
+        coreVault.disableEmergencyMode();
+        assertFalse(coreVault.emergencyMode());
+        vm.stopPrank();
+    }
+
+    // ============ Oracle Role Tests ============
+
+    function test_OracleRateUpdate() public {
+        // Get initial rate source
+        DOORRateOracle.RateSource memory initialSource = rateOracle.getRateSource(0);
+        uint256 initialRate = initialSource.rate; // Should be 350
+
+        // Update oracle rate (within MAX_RATE_CHANGE of 200)
+        vm.prank(deployer);
+        rateOracle.updateRate(0, 500); // Update TESR to 5% (change of 150)
+
+        // Check rate changed immediately
+        DOORRateOracle.RateSource memory newSource = rateOracle.getRateSource(0);
+        assertEq(newSource.rate, 500);
+        assertTrue(newSource.rate != initialRate);
+    }
+
+    function test_OracleBatchUpdate() public {
+        uint256[] memory sourceIds = new uint256[](2);
+        sourceIds[0] = 0; // TESR
+        sourceIds[1] = 1; // AAVE
+
+        uint256[] memory newRates = new uint256[](2);
+        newRates[0] = 550; // 5.5%
+        newRates[1] = 450; // 4.5%
+
+        // Batch update
+        vm.prank(deployer);
+        rateOracle.batchUpdateRates(sourceIds, newRates);
+
+        // Verify updated
+        DOORRateOracle.RateSource memory tesrSource = rateOracle.getRateSource(0);
+        DOORRateOracle.RateSource memory aaveSource = rateOracle.getRateSource(1);
+
+        assertEq(tesrSource.rate, 550);
+        assertEq(aaveSource.rate, 450);
     }
 }

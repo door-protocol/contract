@@ -10,6 +10,7 @@ import {ICoreVault} from "./interfaces/ICoreVault.sol";
 import {ISeniorTranche, IJuniorTranche} from "../tranches/interfaces/ITranche.sol";
 import {IVaultStrategy} from "../strategy/interfaces/IVaultStrategy.sol";
 import {IDOORRateOracle} from "../oracle/interfaces/IDOORRateOracle.sol";
+import {ISafetyModule} from "../safety/interfaces/ISafetyModule.sol";
 import {WaterfallMath} from "../libraries/WaterfallMath.sol";
 
 /**
@@ -52,6 +53,9 @@ contract CoreVault is ICoreVault, AccessControl, ReentrancyGuard {
     /// @notice The rate oracle
     IDOORRateOracle public rateOracle;
 
+    /// @notice The safety module (for dynamic APY)
+    ISafetyModule public safetyModule;
+
     /// @notice Treasury address for protocol fees
     address public treasury;
 
@@ -87,6 +91,9 @@ contract CoreVault is ICoreVault, AccessControl, ReentrancyGuard {
 
     /// @notice Whether protocol is initialized
     bool public initialized;
+
+    // ============ Events ============
+    event StrategyUpdated(address indexed newStrategy);
 
     // ============ Errors ============
     error NotTranche();
@@ -315,7 +322,20 @@ contract CoreVault is ICoreVault, AccessControl, ReentrancyGuard {
     }
 
     /**
-     * @notice Sync Senior rate from oracle
+     * @notice Sync Senior rate from SafetyModule
+     */
+    function syncSeniorRateFromSafetyModule() external onlyRole(KEEPER_ROLE) whenInitialized {
+        if (address(safetyModule) == address(0)) return;
+
+        uint256 targetAPY = safetyModule.getSeniorTargetAPY();
+        if (targetAPY > 0) {
+            baseRate = targetAPY;
+            _adjustRate();
+        }
+    }
+
+    /**
+     * @notice Sync Senior rate from oracle (deprecated, use syncSeniorRateFromSafetyModule)
      */
     function syncSeniorRateFromOracle() external onlyRole(KEEPER_ROLE) whenInitialized {
         if (address(rateOracle) == address(0)) return;
@@ -384,6 +404,25 @@ contract CoreVault is ICoreVault, AccessControl, ReentrancyGuard {
      */
     function withdrawFromStrategy(uint256 amount) external onlyRole(STRATEGY_ROLE) whenInitialized {
         strategy.withdraw(amount);
+    }
+
+    /**
+     * @notice Update the strategy contract
+     * @param newStrategy The new strategy address
+     */
+    function setStrategy(address newStrategy) external onlyRole(DEFAULT_ADMIN_ROLE) whenInitialized {
+        if (newStrategy == address(0)) revert ZeroAddress();
+        strategy = IVaultStrategy(newStrategy);
+        emit StrategyUpdated(newStrategy);
+    }
+
+    /**
+     * @notice Set SafetyModule address
+     * @param newSafetyModule The SafetyModule address
+     */
+    function setSafetyModule(address newSafetyModule) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (newSafetyModule == address(0)) revert ZeroAddress();
+        safetyModule = ISafetyModule(newSafetyModule);
     }
 
     // ============ Emergency Functions ============

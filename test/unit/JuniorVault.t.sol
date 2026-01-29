@@ -3,11 +3,12 @@ pragma solidity ^0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
 import {MockUSDC} from "../../src/mocks/MockUSDC.sol";
+import {MockMETH} from "../../src/mocks/MockMETH.sol";
 import {JuniorVault} from "../../src/tranches/JuniorVault.sol";
 import {SeniorVault} from "../../src/tranches/SeniorVault.sol";
 import {CoreVault} from "../../src/core/CoreVault.sol";
 import {DOORRateOracle} from "../../src/oracle/DOORRateOracle.sol";
-import {MockYieldStrategy} from "../../src/strategy/MockYieldStrategy.sol";
+import {MockVaultStrategy} from "../../src/strategy/MockVaultStrategy.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
@@ -16,16 +17,19 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  */
 contract JuniorVaultTest is Test {
     MockUSDC public usdc;
+    MockMETH public meth;
     JuniorVault public juniorVault;
     SeniorVault public seniorVault;
     CoreVault public coreVault;
     DOORRateOracle public oracle;
-    MockYieldStrategy public strategy;
+    MockVaultStrategy public strategy;
 
     address public deployer;
     address public alice;
     address public bob;
     address public treasury;
+
+    bytes32 public constant VAULT_ROLE = keccak256("VAULT_ROLE");
 
     uint256 constant INITIAL_BALANCE = 1_000_000e6;
 
@@ -41,17 +45,19 @@ contract JuniorVaultTest is Test {
 
         // Deploy contracts
         usdc = new MockUSDC();
+        meth = new MockMETH();
         seniorVault = new SeniorVault(IERC20(address(usdc)));
         juniorVault = new JuniorVault(IERC20(address(usdc)));
         coreVault = new CoreVault(address(usdc), address(seniorVault), address(juniorVault));
         oracle = new DOORRateOracle();
-        strategy = new MockYieldStrategy(address(usdc));
+        strategy = new MockVaultStrategy(address(usdc), address(meth));
 
         // Initialize
         seniorVault.initialize(address(coreVault));
         juniorVault.initialize(address(coreVault));
         coreVault.initialize(address(strategy), address(oracle), treasury);
-        strategy.setOwner(address(coreVault));
+        strategy.initialize(address(coreVault));
+        strategy.grantRole(VAULT_ROLE, address(coreVault));
 
         // Mint tokens
         usdc.mint(alice, INITIAL_BALANCE);

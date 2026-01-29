@@ -10,7 +10,7 @@ const CONTRACTS = [
   'SafetyModule',
   'DOORRateOracle',
   'VaultStrategy',
-  'MockYieldStrategy',
+  'MockVaultStrategy',
   'MockUSDC',
   'MockMETH',
 ];

@@ -19,7 +19,7 @@ interface DeploymentAddresses {
     SafetyModule: string;
     DOORRateOracle: string;
     VaultStrategy: string;
-    MockYieldStrategy: string;
+    MockVaultStrategy: string;
   };
   timestamp: string;
 }
@@ -55,13 +55,13 @@ async function main() {
   console.log('--- Phase 1: Deploying Tranche Vaults ---');
 
   const SeniorVault = await ethers.getContractFactory('SeniorVault');
-  const seniorVault = await SeniorVault.deploy(TESTNET_TOKENS.USDC);
+  const seniorVault = await SeniorVault.deploy(TESTNET_TOKENS.USDC, TESTNET_TOKENS.METH);
   await seniorVault.waitForDeployment();
   const seniorVaultAddress = await seniorVault.getAddress();
   console.log('SeniorVault deployed at:', seniorVaultAddress);
 
   const JuniorVault = await ethers.getContractFactory('JuniorVault');
-  const juniorVault = await JuniorVault.deploy(TESTNET_TOKENS.USDC);
+  const juniorVault = await JuniorVault.deploy(TESTNET_TOKENS.USDC, TESTNET_TOKENS.METH);
   await juniorVault.waitForDeployment();
   const juniorVaultAddress = await juniorVault.getAddress();
   console.log('JuniorVault deployed at:', juniorVaultAddress);
@@ -111,12 +111,12 @@ async function main() {
   const vaultStrategyAddress = await vaultStrategy.getAddress();
   console.log('VaultStrategy deployed at:', vaultStrategyAddress);
 
-  const MockYieldStrategy =
-    await ethers.getContractFactory('MockYieldStrategy');
-  const mockYieldStrategy = await MockYieldStrategy.deploy(TESTNET_TOKENS.USDC);
-  await mockYieldStrategy.waitForDeployment();
-  const mockYieldStrategyAddress = await mockYieldStrategy.getAddress();
-  console.log('MockYieldStrategy deployed at:', mockYieldStrategyAddress);
+  const MockVaultStrategy =
+    await ethers.getContractFactory('MockVaultStrategy');
+  const mockVaultStrategy = await MockVaultStrategy.deploy(TESTNET_TOKENS.USDC, TESTNET_TOKENS.METH);
+  await mockVaultStrategy.waitForDeployment();
+  const mockVaultStrategyAddress = await mockVaultStrategy.getAddress();
+  console.log('MockVaultStrategy deployed at:', mockVaultStrategyAddress);
 
   // Phase 3: Initialize Contracts
   console.log('\n--- Phase 3: Initializing Contracts ---');
@@ -129,12 +129,23 @@ async function main() {
 
   await (
     await coreVault.initialize(
-      mockYieldStrategyAddress,
+      mockVaultStrategyAddress,
       rateOracleAddress,
       treasury,
     )
   ).wait();
   console.log('CoreVault initialized');
+
+  await (await coreVault.setSafetyModule(safetyModuleAddress)).wait();
+  console.log('CoreVault SafetyModule set');
+
+  await (await coreVault.syncSeniorRateFromSafetyModule()).wait();
+  console.log('CoreVault synced rate from SafetyModule');
+
+  const seniorFixedRate = await coreVault.seniorFixedRate();
+  const baseRate = await coreVault.baseRate();
+  console.log(`  Senior Fixed Rate: ${(Number(seniorFixedRate) / 100).toFixed(1)}%`);
+  console.log(`  Base Rate: ${(Number(baseRate) / 100).toFixed(1)}%`);
 
   await (await epochManager.initialize()).wait();
   console.log('EpochManager initialized');
@@ -142,8 +153,8 @@ async function main() {
   await (await vaultStrategy.initialize(coreVaultAddress)).wait();
   console.log('VaultStrategy initialized');
 
-  await (await mockYieldStrategy.setOwner(coreVaultAddress)).wait();
-  console.log('MockYieldStrategy owner set');
+  await (await mockVaultStrategy.initialize(coreVaultAddress)).wait();
+  console.log('MockVaultStrategy initialized');
 
   // Phase 4: Setup Roles
   console.log('\n--- Phase 4: Setting Up Roles ---');
@@ -184,7 +195,7 @@ async function main() {
       SafetyModule: safetyModuleAddress,
       DOORRateOracle: rateOracleAddress,
       VaultStrategy: vaultStrategyAddress,
-      MockYieldStrategy: mockYieldStrategyAddress,
+      MockVaultStrategy: mockVaultStrategyAddress,
     },
     timestamp: new Date().toISOString(),
   };

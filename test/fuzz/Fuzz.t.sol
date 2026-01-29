@@ -3,11 +3,12 @@ pragma solidity ^0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
 import {MockUSDC} from "../../src/mocks/MockUSDC.sol";
+import {MockMETH} from "../../src/mocks/MockMETH.sol";
 import {SeniorVault} from "../../src/tranches/SeniorVault.sol";
 import {JuniorVault} from "../../src/tranches/JuniorVault.sol";
 import {CoreVault} from "../../src/core/CoreVault.sol";
 import {DOORRateOracle} from "../../src/oracle/DOORRateOracle.sol";
-import {MockYieldStrategy} from "../../src/strategy/MockYieldStrategy.sol";
+import {MockVaultStrategy} from "../../src/strategy/MockVaultStrategy.sol";
 import {WaterfallMath} from "../../src/libraries/WaterfallMath.sol";
 import {SafetyLib} from "../../src/libraries/SafetyLib.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -18,15 +19,18 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  */
 contract FuzzTest is Test {
     MockUSDC public usdc;
+    MockMETH public meth;
     SeniorVault public seniorVault;
     JuniorVault public juniorVault;
     CoreVault public coreVault;
     DOORRateOracle public oracle;
-    MockYieldStrategy public strategy;
+    MockVaultStrategy public strategy;
 
     address public deployer;
     address public treasury;
     address public alice;
+
+    bytes32 public constant VAULT_ROLE = keccak256("VAULT_ROLE");
 
     function setUp() public {
         deployer = address(this);
@@ -34,16 +38,18 @@ contract FuzzTest is Test {
         alice = makeAddr("alice");
 
         usdc = new MockUSDC();
+        meth = new MockMETH();
         seniorVault = new SeniorVault(IERC20(address(usdc)));
         juniorVault = new JuniorVault(IERC20(address(usdc)));
         coreVault = new CoreVault(address(usdc), address(seniorVault), address(juniorVault));
         oracle = new DOORRateOracle();
-        strategy = new MockYieldStrategy(address(usdc));
+        strategy = new MockVaultStrategy(address(usdc), address(meth));
 
         seniorVault.initialize(address(coreVault));
         juniorVault.initialize(address(coreVault));
         coreVault.initialize(address(strategy), address(oracle), treasury);
-        strategy.setOwner(address(coreVault));
+        strategy.initialize(address(coreVault));
+        strategy.grantRole(VAULT_ROLE, address(coreVault));
     }
 
     // ============ Senior Vault Fuzz Tests ============

@@ -3,13 +3,14 @@ pragma solidity ^0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
 import {MockUSDC} from "../../src/mocks/MockUSDC.sol";
+import {MockMETH} from "../../src/mocks/MockMETH.sol";
 import {SeniorVault} from "../../src/tranches/SeniorVault.sol";
 import {JuniorVault} from "../../src/tranches/JuniorVault.sol";
 import {CoreVault} from "../../src/core/CoreVault.sol";
 import {SafetyModule} from "../../src/safety/SafetyModule.sol";
 import {ISafetyModule} from "../../src/safety/interfaces/ISafetyModule.sol";
 import {DOORRateOracle} from "../../src/oracle/DOORRateOracle.sol";
-import {MockYieldStrategy} from "../../src/strategy/MockYieldStrategy.sol";
+import {MockVaultStrategy} from "../../src/strategy/MockVaultStrategy.sol";
 import {SafetyLib} from "../../src/libraries/SafetyLib.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -19,12 +20,13 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  */
 contract SafetyModuleTest is Test {
     MockUSDC public usdc;
+    MockMETH public meth;
     SeniorVault public seniorVault;
     JuniorVault public juniorVault;
     CoreVault public coreVault;
     SafetyModule public safetyModule;
     DOORRateOracle public oracle;
-    MockYieldStrategy public strategy;
+    MockVaultStrategy public strategy;
 
     address public deployer;
     address public alice;
@@ -35,6 +37,7 @@ contract SafetyModuleTest is Test {
     uint256 constant INITIAL_BALANCE = 1_000_000e6;
 
     bytes32 public constant KEEPER_ROLE = keccak256("KEEPER_ROLE");
+    bytes32 public constant VAULT_ROLE = keccak256("VAULT_ROLE");
 
     event SafetyLevelChanged(SafetyLib.SafetyLevel indexed oldLevel, SafetyLib.SafetyLevel indexed newLevel);
     event SeniorDepositsPaused(string reason);
@@ -49,18 +52,20 @@ contract SafetyModuleTest is Test {
 
         // Deploy contracts
         usdc = new MockUSDC();
+        meth = new MockMETH();
         seniorVault = new SeniorVault(IERC20(address(usdc)));
         juniorVault = new JuniorVault(IERC20(address(usdc)));
         coreVault = new CoreVault(address(usdc), address(seniorVault), address(juniorVault));
         safetyModule = new SafetyModule(address(coreVault));
         oracle = new DOORRateOracle();
-        strategy = new MockYieldStrategy(address(usdc));
+        strategy = new MockVaultStrategy(address(usdc), address(meth));
 
         // Initialize
         seniorVault.initialize(address(coreVault));
         juniorVault.initialize(address(coreVault));
         coreVault.initialize(address(strategy), address(oracle), treasury);
-        strategy.setOwner(address(coreVault));
+        strategy.initialize(address(coreVault));
+        strategy.grantRole(VAULT_ROLE, address(coreVault));
 
         // Setup roles
         safetyModule.grantRole(KEEPER_ROLE, keeper);

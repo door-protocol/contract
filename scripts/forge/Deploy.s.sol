@@ -12,7 +12,7 @@ import {EpochManager} from "../../src/epoch/EpochManager.sol";
 import {SafetyModule} from "../../src/safety/SafetyModule.sol";
 import {DOORRateOracle} from "../../src/oracle/DOORRateOracle.sol";
 import {VaultStrategy} from "../../src/strategy/VaultStrategy.sol";
-import {MockYieldStrategy} from "../../src/strategy/MockYieldStrategy.sol";
+import {MockVaultStrategy} from "../../src/strategy/MockVaultStrategy.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
@@ -37,7 +37,7 @@ contract Deploy is Script {
     SafetyModule public safetyModule;
     DOORRateOracle public rateOracle;
     VaultStrategy public strategy;
-    MockYieldStrategy public mockStrategy;
+    MockVaultStrategy public mockStrategy;
 
     // Configuration
     address public deployer;
@@ -128,9 +128,9 @@ contract Deploy is Script {
         strategy = new VaultStrategy(address(usdc), address(meth));
         console.log("VaultStrategy deployed at:", address(strategy));
 
-        // Deploy MockYieldStrategy (for testing)
-        mockStrategy = new MockYieldStrategy(address(usdc));
-        console.log("MockYieldStrategy deployed at:", address(mockStrategy));
+        // Deploy MockVaultStrategy (for testing)
+        mockStrategy = new MockVaultStrategy(address(usdc), address(meth));
+        console.log("MockVaultStrategy deployed at:", address(mockStrategy));
     }
 
     function _initializeContracts() internal {
@@ -145,9 +145,22 @@ contract Deploy is Script {
         console.log("JuniorVault initialized");
 
         // Initialize CoreVault with Strategy, Oracle, and Treasury
-        // Using MockYieldStrategy for testing - replace with VaultStrategy in production
+        // Using MockVaultStrategy for testing - replace with VaultStrategy in production
         coreVault.initialize(address(mockStrategy), address(rateOracle), treasury);
         console.log("CoreVault initialized");
+
+        // Connect SafetyModule to CoreVault
+        coreVault.setSafetyModule(address(safetyModule));
+        console.log("CoreVault SafetyModule set");
+
+        // Sync senior rate from SafetyModule
+        coreVault.syncSeniorRateFromSafetyModule();
+        console.log("CoreVault synced rate from SafetyModule");
+
+        uint256 seniorFixedRate = coreVault.seniorFixedRate();
+        uint256 baseRate = coreVault.baseRate();
+        console.log("  Senior Fixed Rate:", seniorFixedRate / 100, "%");
+        console.log("  Base Rate:", baseRate / 100, "%");
 
         // Initialize EpochManager
         epochManager.initialize();
@@ -157,9 +170,9 @@ contract Deploy is Script {
         strategy.initialize(address(coreVault));
         console.log("VaultStrategy initialized");
 
-        // Set MockYieldStrategy owner to CoreVault
-        mockStrategy.setOwner(address(coreVault));
-        console.log("MockYieldStrategy owner set");
+        // Initialize MockVaultStrategy with CoreVault
+        mockStrategy.initialize(address(coreVault));
+        console.log("MockVaultStrategy initialized");
     }
 
     function _setupRoles() internal {
@@ -186,6 +199,19 @@ contract Deploy is Script {
         // Grant roles on VaultStrategy
         strategy.grantRole(KEEPER_ROLE, deployer);
         console.log("KEEPER_ROLE granted to deployer on VaultStrategy");
+
+        // Grant KEEPER_ROLE to deployer on MockVaultStrategy
+        mockStrategy.grantRole(KEEPER_ROLE, deployer);
+        console.log("KEEPER_ROLE granted to deployer on MockVaultStrategy");
+
+        // Grant VAULT_ROLE to CoreVault on MockVaultStrategy
+        bytes32 VAULT_ROLE = keccak256("VAULT_ROLE");
+        mockStrategy.grantRole(VAULT_ROLE, address(coreVault));
+        console.log("VAULT_ROLE granted to CoreVault on MockVaultStrategy");
+
+        // Grant KEEPER_ROLE to EpochManager on CoreVault
+        coreVault.grantRole(KEEPER_ROLE, address(epochManager));
+        console.log("KEEPER_ROLE granted to EpochManager on CoreVault");
     }
 
     function _logDeployedAddresses() internal view {
@@ -205,7 +231,7 @@ contract Deploy is Script {
         console.log("DOORRateOracle:", address(rateOracle));
         console.log("\n--- Strategy Addresses ---");
         console.log("VaultStrategy:", address(strategy));
-        console.log("MockYieldStrategy:", address(mockStrategy));
+        console.log("MockVaultStrategy:", address(mockStrategy));
         console.log("\n--- Configuration ---");
         console.log("Treasury:", treasury);
         console.log("========================================\n");
@@ -233,7 +259,7 @@ contract DeployTestnet is Deploy {
 
         // Mint USDC to strategy for yield simulation
         usdc.mint(address(mockStrategy), 100_000e6); // 100K USDC for yield
-        console.log("Minted 100K USDC to MockYieldStrategy for yield simulation");
+        console.log("Minted 100K USDC to MockVaultStrategy for yield simulation");
 
         vm.stopBroadcast();
     }

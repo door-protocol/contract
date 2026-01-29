@@ -9,6 +9,7 @@ import {IVaultStrategy} from "./interfaces/IVaultStrategy.sol";
  * @title MockYieldStrategy
  * @notice Mock strategy for testing yield generation
  * @dev Simulates yield with configurable rate - for testing only
+ * @custom:deprecated This contract is deprecated. Use MockVaultStrategy instead.
  */
 contract MockYieldStrategy is IVaultStrategy {
     using SafeERC20 for IERC20;

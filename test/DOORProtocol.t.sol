@@ -11,7 +11,7 @@ import {EpochManager} from "../src/epoch/EpochManager.sol";
 import {SafetyModule} from "../src/safety/SafetyModule.sol";
 import {DOORRateOracle} from "../src/oracle/DOORRateOracle.sol";
 import {VaultStrategy} from "../src/strategy/VaultStrategy.sol";
-import {MockYieldStrategy} from "../src/strategy/MockYieldStrategy.sol";
+import {MockVaultStrategy} from "../src/strategy/MockVaultStrategy.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract DOORProtocolTest is Test {
@@ -24,7 +24,7 @@ contract DOORProtocolTest is Test {
     SafetyModule public safetyModule;
     DOORRateOracle public rateOracle;
     VaultStrategy public strategy;
-    MockYieldStrategy public mockStrategy;
+    MockVaultStrategy public mockStrategy;
 
     address public deployer;
     address public treasury;
@@ -32,6 +32,12 @@ contract DOORProtocolTest is Test {
     address public bob;
 
     uint256 constant INITIAL_BALANCE = 1_000_000e6; // 1M USDC
+
+    bytes32 public constant KEEPER_ROLE = keccak256("KEEPER_ROLE");
+    bytes32 public constant STRATEGY_ROLE = keccak256("STRATEGY_ROLE");
+    bytes32 public constant ORACLE_ROLE = keccak256("ORACLE_ROLE");
+    bytes32 public constant EMERGENCY_ROLE = keccak256("EMERGENCY_ROLE");
+    bytes32 public constant VAULT_ROLE = keccak256("VAULT_ROLE");
 
     function setUp() public {
         deployer = address(this);
@@ -53,7 +59,7 @@ contract DOORProtocolTest is Test {
         safetyModule = new SafetyModule(address(coreVault));
         rateOracle = new DOORRateOracle();
         strategy = new VaultStrategy(address(usdc), address(meth));
-        mockStrategy = new MockYieldStrategy(address(usdc));
+        mockStrategy = new MockVaultStrategy(address(usdc), address(meth));
 
         // Initialize
         seniorVault.initialize(address(coreVault));
@@ -61,16 +67,18 @@ contract DOORProtocolTest is Test {
         coreVault.initialize(address(mockStrategy), address(rateOracle), treasury);
         epochManager.initialize();
         strategy.initialize(address(coreVault));
-        mockStrategy.setOwner(address(coreVault));
+        strategy.grantRole(VAULT_ROLE, address(coreVault));
+        mockStrategy.initialize(address(coreVault));
+        mockStrategy.grantRole(VAULT_ROLE, address(coreVault));
 
         // Setup roles
-        bytes32 KEEPER_ROLE = keccak256("KEEPER_ROLE");
-        bytes32 STRATEGY_ROLE = keccak256("STRATEGY_ROLE");
         coreVault.grantRole(KEEPER_ROLE, deployer);
         coreVault.grantRole(STRATEGY_ROLE, deployer);
+        coreVault.grantRole(EMERGENCY_ROLE, deployer);
         epochManager.grantRole(KEEPER_ROLE, deployer);
         safetyModule.grantRole(KEEPER_ROLE, deployer);
         strategy.grantRole(KEEPER_ROLE, deployer);
+        rateOracle.grantRole(ORACLE_ROLE, deployer);
 
         // Mint tokens to users
         usdc.mint(alice, INITIAL_BALANCE);
@@ -254,5 +262,42 @@ contract DOORProtocolTest is Test {
         assertEq(juniorPrincipal, juniorDeposit);
         assertEq(totalAssets, seniorDeposit + juniorDeposit);
         assertEq(juniorRatio, 2000); // 20%
+    }
+
+    // ============ Emergency Role Tests ============
+
+    function test_EmergencyRole() public {
+        // Emergency withdraw should work with EMERGENCY_ROLE
+        assertFalse(coreVault.emergencyMode());
+
+        vm.prank(deployer);
+        coreVault.emergencyWithdraw();
+
+        assertTrue(coreVault.emergencyMode());
+    }
+
+    function test_RevertWhen_EmergencyWithdrawUnauthorized() public {
+        vm.expectRevert();
+        vm.prank(alice);
+        coreVault.emergencyWithdraw();
+    }
+
+    // ============ Oracle Role Tests ============
+
+    function test_OracleRole() public {
+        // Update rate should work with ORACLE_ROLE
+        // Initial rate is 350, change by 150 (within MAX_RATE_CHANGE of 200)
+        vm.prank(deployer);
+        rateOracle.updateRate(0, 500); // Update TESR to 5%
+
+        // Verify rate was updated immediately (no challenge period)
+        DOORRateOracle.RateSource memory source = rateOracle.getRateSource(0);
+        assertEq(source.rate, 500);
+    }
+
+    function test_RevertWhen_OracleUpdateUnauthorized() public {
+        vm.expectRevert();
+        vm.prank(alice);
+        rateOracle.updateRate(0, 500);
     }
 }

@@ -38,7 +38,7 @@ interface PartialDeployment {
     SafetyModule: string;
     DOORRateOracle: string;
     VaultStrategy: string;
-    MockYieldStrategy: string;
+    MockVaultStrategy: string;
   };
 }
 
@@ -63,16 +63,16 @@ async function main() {
   // UPDATE THESE ADDRESSES WITH YOUR DEPLOYED CONTRACTS
   // ============================================================================
   const ADDRESSES = {
-    MockUSDC: '0xa9fd59bf5009da2d002a474309ca38a8d8686f6a',
-    MockMETH: '0xac8fc1d5593ada635c5569e35534bfab1ab2fedc',
-    SeniorVault: '0x03f4903c3fcf0cb23bee2c11531afb8a1307ce91',
-    JuniorVault: '0x694c667c3b7ba5620c68fe1cc3b308eed26afc6e',
-    CoreVault: '0x8d3ed9a02d3f1e05f68a306037edaf9a54a16105',
-    EpochManager: '0xdc0f912aa970f2a89381985a8e0ea3128e754748',
-    SafetyModule: '0xab5fd152973f5430991df6c5b74a5559ffa0d189',
-    DOORRateOracle: '0xe76e27759b2416ec7c9ddf8ed7a58e61030876a4',
-    VaultStrategy: '0xdd84c599f3b9a12d7f8e583539f11a3e1d9224df',
-    MockYieldStrategy: '0x403e548ec79ade195db7e7abaa0eb203bbaa1db0',
+    MockUSDC: '0xbadbbDb50f5F0455Bf6E4Dd6d4B5ee664D07c109',
+    MockMETH: '0x374962241A369F1696EF88C10beFe4f40C646592',
+    SeniorVault: '0x766624E3E59a80Da9801e9b71994cb927eB7F260',
+    JuniorVault: '0x8d1fBEa28CC47959bd94ece489cb1823BeB55075',
+    CoreVault: '0x6D418348BFfB4196D477DBe2b1082485F5aE5164',
+    EpochManager: '0x7cbdd2d816C4d733b36ED131695Ac9cb17684DC3',
+    SafetyModule: '0xE2fa3596C8969bbd28b3dda515BABb268343df4B',
+    DOORRateOracle: '0x738c765fB734b774EBbABc9eDb5f099c46542Ee4',
+    VaultStrategy: '0xf9579CE4D63174b1f0f5bCB9d42255BDd07a6374',
+    MockVaultStrategy: '0x6dc9D97D7d17B01Eb8D6669a6feF05cc3D3b70d6',
   };
 
   console.log('Using deployed contract addresses...\n');
@@ -98,9 +98,9 @@ async function main() {
     'VaultStrategy',
     ADDRESSES.VaultStrategy as `0x${string}`,
   );
-  const mockYieldStrategy = await hre.viem.getContractAt(
-    'MockYieldStrategy',
-    ADDRESSES.MockYieldStrategy as `0x${string}`,
+  const mockVaultStrategy = await hre.viem.getContractAt(
+    'MockVaultStrategy',
+    ADDRESSES.MockVaultStrategy as `0x${string}`,
   );
   const safetyModule = await hre.viem.getContractAt(
     'SafetyModule',
@@ -153,7 +153,7 @@ async function main() {
     if (!coreInitialized) {
       console.log('Initializing CoreVault...');
       await coreVault.write.initialize([
-        ADDRESSES.MockYieldStrategy as `0x${string}`,
+        ADDRESSES.MockVaultStrategy as `0x${string}`,
         ADDRESSES.DOORRateOracle as `0x${string}`,
         treasury as `0x${string}`,
       ]);
@@ -191,19 +191,19 @@ async function main() {
     console.log('Error checking VaultStrategy:', (e as Error).message);
   }
 
-  // Set MockYieldStrategy owner
+  // Check MockVaultStrategy
   try {
-    const currentOwner = (await mockYieldStrategy.read.owner()) as string;
-    console.log(`MockYieldStrategy owner: ${currentOwner}`);
-    if (currentOwner.toLowerCase() !== ADDRESSES.CoreVault.toLowerCase()) {
-      console.log('Setting MockYieldStrategy owner...');
-      await mockYieldStrategy.write.setOwner([
+    const strategyInitialized = await mockVaultStrategy.read.initialized();
+    console.log(`MockVaultStrategy initialized: ${strategyInitialized}`);
+    if (!strategyInitialized) {
+      console.log('Initializing MockVaultStrategy...');
+      await mockVaultStrategy.write.initialize([
         ADDRESSES.CoreVault as `0x${string}`,
       ]);
-      console.log('✓ MockYieldStrategy owner set');
+      console.log('✓ MockVaultStrategy initialized');
     }
   } catch (e) {
-    console.log('Error with MockYieldStrategy:', (e as Error).message);
+    console.log('Error with MockVaultStrategy:', (e as Error).message);
   }
 
   // ============================================================================
@@ -262,6 +262,37 @@ async function main() {
       await vaultStrategy.write.grantRole([KEEPER_ROLE, deployerAddress]);
       console.log('KEEPER_ROLE granted to deployer on VaultStrategy');
     }
+
+    // Grant KEEPER_ROLE to deployer on MockVaultStrategy
+    const hasMockVaultStrategyKeeperRole = await mockVaultStrategy.read.hasRole([
+      KEEPER_ROLE,
+      deployerAddress,
+    ]);
+    if (!hasMockVaultStrategyKeeperRole) {
+      await mockVaultStrategy.write.grantRole([KEEPER_ROLE, deployerAddress]);
+      console.log('KEEPER_ROLE granted to deployer on MockVaultStrategy');
+    }
+
+    // Grant VAULT_ROLE to CoreVault on MockVaultStrategy
+    const VAULT_ROLE = await mockVaultStrategy.read.VAULT_ROLE();
+    const hasVaultRole = await mockVaultStrategy.read.hasRole([
+      VAULT_ROLE,
+      ADDRESSES.CoreVault as `0x${string}`,
+    ]);
+    if (!hasVaultRole) {
+      await mockVaultStrategy.write.grantRole([VAULT_ROLE, ADDRESSES.CoreVault as `0x${string}`]);
+      console.log('VAULT_ROLE granted to CoreVault on MockVaultStrategy');
+    }
+
+    // Grant KEEPER_ROLE to EpochManager on CoreVault
+    const hasEpochManagerKeeperOnCore = await coreVault.read.hasRole([
+      KEEPER_ROLE,
+      ADDRESSES.EpochManager as `0x${string}`,
+    ]);
+    if (!hasEpochManagerKeeperOnCore) {
+      await coreVault.write.grantRole([KEEPER_ROLE, ADDRESSES.EpochManager as `0x${string}`]);
+      console.log('KEEPER_ROLE granted to EpochManager on CoreVault');
+    }
   } catch (e) {
     console.log('Error setting up roles:', (e as Error).message);
   }
@@ -282,7 +313,7 @@ async function main() {
       SafetyModule: ADDRESSES.SafetyModule,
       DOORRateOracle: ADDRESSES.DOORRateOracle,
       VaultStrategy: ADDRESSES.VaultStrategy,
-      MockYieldStrategy: ADDRESSES.MockYieldStrategy,
+      MockVaultStrategy: ADDRESSES.MockVaultStrategy,
     },
   };
 

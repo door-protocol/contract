@@ -8,12 +8,7 @@
         "internalType": "address"
       },
       {
-        "name": "seniorVault_",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "juniorVault_",
+        "name": "meth_",
         "type": "address",
         "internalType": "address"
       }
@@ -35,6 +30,19 @@
   },
   {
     "type": "function",
+    "name": "BASIS_POINTS",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "DEFAULT_ADMIN_ROLE",
     "inputs": [],
     "outputs": [
@@ -42,32 +50,6 @@
         "name": "",
         "type": "bytes32",
         "internalType": "bytes32"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "EMERGENCY_ROLE",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "JUNIOR_VAULT",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "contract IJuniorTranche"
       }
     ],
     "stateMutability": "view"
@@ -87,20 +69,33 @@
   },
   {
     "type": "function",
-    "name": "SENIOR_VAULT",
+    "name": "METH",
     "inputs": [],
     "outputs": [
       {
         "name": "",
         "type": "address",
-        "internalType": "contract ISeniorTranche"
+        "internalType": "contract IERC20"
       }
     ],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "STRATEGY_ROLE",
+    "name": "REBALANCE_THRESHOLD",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "VAULT_ROLE",
     "inputs": [],
     "outputs": [
       {
@@ -113,33 +108,7 @@
   },
   {
     "type": "function",
-    "name": "baseRate",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "currentEpochId",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "deployToStrategy",
+    "name": "addManualYield",
     "inputs": [
       {
         "name": "amount",
@@ -152,13 +121,34 @@
   },
   {
     "type": "function",
-    "name": "deregisterPrincipal",
-    "inputs": [
+    "name": "calculateExpectedApy",
+    "inputs": [],
+    "outputs": [
       {
-        "name": "isSenior",
-        "type": "bool",
-        "internalType": "bool"
-      },
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "coreVault",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "deposit",
+    "inputs": [
       {
         "name": "amount",
         "type": "uint256",
@@ -170,53 +160,37 @@
   },
   {
     "type": "function",
-    "name": "disableEmergencyMode",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "emergencyMode",
+    "name": "getCurrentAllocation",
     "inputs": [],
     "outputs": [
       {
         "name": "",
-        "type": "bool",
-        "internalType": "bool"
+        "type": "tuple",
+        "internalType": "struct IVaultStrategy.Allocation",
+        "components": [
+          {
+            "name": "mEthRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "usdcRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "rwaRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
       }
     ],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "emergencyWithdraw",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "expectedSeniorYield",
-    "inputs": [
-      {
-        "name": "timeElapsed",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "getJuniorRatio",
+    "name": "getPendingYield",
     "inputs": [],
     "outputs": [
       {
@@ -248,38 +222,30 @@
   },
   {
     "type": "function",
-    "name": "getStats",
+    "name": "getTargetAllocation",
     "inputs": [],
     "outputs": [
       {
-        "name": "_seniorPrincipal",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "_juniorPrincipal",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "totalAssets",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "currentSeniorRate",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "juniorRatio",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "isHealthy",
-        "type": "bool",
-        "internalType": "bool"
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct IVaultStrategy.Allocation",
+        "components": [
+          {
+            "name": "mEthRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "usdcRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "rwaRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
       }
     ],
     "stateMutability": "view"
@@ -306,7 +272,13 @@
     "type": "function",
     "name": "harvest",
     "inputs": [],
-    "outputs": [],
+    "outputs": [
+      {
+        "name": "yieldAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable"
   },
   {
@@ -338,75 +310,13 @@
     "name": "initialize",
     "inputs": [
       {
-        "name": "strategy_",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "rateOracle_",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "treasury_",
+        "name": "coreVault_",
         "type": "address",
         "internalType": "address"
       }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "initialized",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "juniorLeverage",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "juniorPrincipal",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "juniorVault",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -423,7 +333,7 @@
   },
   {
     "type": "function",
-    "name": "minJuniorRatio",
+    "name": "mEthApy",
     "inputs": [],
     "outputs": [
       {
@@ -436,7 +346,7 @@
   },
   {
     "type": "function",
-    "name": "minRate",
+    "name": "mEthBalance",
     "inputs": [],
     "outputs": [
       {
@@ -449,45 +359,34 @@
   },
   {
     "type": "function",
-    "name": "protocolFeeRate",
+    "name": "needsRebalancing",
     "inputs": [],
     "outputs": [
       {
         "name": "",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "rateOracle",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "contract IDOORRateOracle"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "registerPrincipal",
-    "inputs": [
-      {
-        "name": "isSenior",
         "type": "bool",
         "internalType": "bool"
-      },
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "pendingYield",
+    "inputs": [],
+    "outputs": [
       {
-        "name": "amount",
+        "name": "",
         "type": "uint256",
         "internalType": "uint256"
       }
     ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "rebalance",
+    "inputs": [],
     "outputs": [],
     "stateMutability": "nonpayable"
   },
@@ -529,20 +428,7 @@
   },
   {
     "type": "function",
-    "name": "safetyModule",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "contract ISafetyModule"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "seniorFixedRate",
+    "name": "rwaApy",
     "inputs": [],
     "outputs": [
       {
@@ -555,7 +441,7 @@
   },
   {
     "type": "function",
-    "name": "seniorPrincipal",
+    "name": "rwaBalance",
     "inputs": [],
     "outputs": [
       {
@@ -568,23 +454,20 @@
   },
   {
     "type": "function",
-    "name": "seniorVault",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
-    "name": "setBaseRate",
+    "name": "setApys",
     "inputs": [
       {
-        "name": "newBaseRate",
+        "name": "mEth",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "usdc",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rwa",
         "type": "uint256",
         "internalType": "uint256"
       }
@@ -594,81 +477,33 @@
   },
   {
     "type": "function",
-    "name": "setMinJuniorRatio",
+    "name": "setTargetAllocation",
     "inputs": [
       {
-        "name": "newRatio",
-        "type": "uint256",
-        "internalType": "uint256"
+        "name": "newAllocation",
+        "type": "tuple",
+        "internalType": "struct IVaultStrategy.Allocation",
+        "components": [
+          {
+            "name": "mEthRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "usdcRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "rwaRatio",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
       }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setMinRate",
-    "inputs": [
-      {
-        "name": "newMinRate",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setProtocolFeeRate",
-    "inputs": [
-      {
-        "name": "newFeeRate",
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setSafetyModule",
-    "inputs": [
-      {
-        "name": "newSafetyModule",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setStrategy",
-    "inputs": [
-      {
-        "name": "newStrategy",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "strategy",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "contract IVaultStrategy"
-      }
-    ],
-    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -691,34 +526,82 @@
   },
   {
     "type": "function",
-    "name": "syncSeniorRateFromOracle",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "syncSeniorRateFromSafetyModule",
-    "inputs": [],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "treasury",
+    "name": "targetAllocation",
     "inputs": [],
     "outputs": [
       {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
+        "name": "mEthRatio",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "usdcRatio",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "rwaRatio",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "stateMutability": "view"
   },
   {
     "type": "function",
-    "name": "withdrawFromStrategy",
+    "name": "totalAssets",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "totalDeployed",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "usdcApy",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "usdcBalance",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "withdraw",
     "inputs": [
       {
         "name": "amount",
@@ -726,41 +609,73 @@
         "internalType": "uint256"
       }
     ],
-    "outputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable"
   },
   {
     "type": "event",
-    "name": "Deposited",
+    "name": "AllocationUpdated",
     "inputs": [
       {
-        "name": "user",
-        "type": "address",
+        "name": "mEthRatio",
+        "type": "uint256",
         "indexed": true,
-        "internalType": "address"
+        "internalType": "uint256"
       },
       {
-        "name": "tranche",
-        "type": "uint8",
+        "name": "usdcRatio",
+        "type": "uint256",
         "indexed": true,
-        "internalType": "enum ICoreVault.TrancheType"
+        "internalType": "uint256"
       },
+      {
+        "name": "rwaRatio",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ApyUpdated",
+    "inputs": [
+      {
+        "name": "mEthApy",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "usdcApy",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "rwaApy",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AssetsDeposited",
+    "inputs": [
       {
         "name": "amount",
         "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "shares",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "epochId",
-        "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -768,44 +683,12 @@
   },
   {
     "type": "event",
-    "name": "EmergencyModeActivated",
+    "name": "AssetsWithdrawn",
     "inputs": [
-      {
-        "name": "reason",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "MinJuniorRatioUpdated",
-    "inputs": [
-      {
-        "name": "newRatio",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "PrincipalDeregistered",
-    "inputs": [
-      {
-        "name": "isSenior",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
-      },
       {
         "name": "amount",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
       }
     ],
@@ -813,29 +696,28 @@
   },
   {
     "type": "event",
-    "name": "PrincipalRegistered",
+    "name": "Rebalanced",
     "inputs": [
       {
-        "name": "isSenior",
-        "type": "bool",
-        "indexed": false,
-        "internalType": "bool"
+        "name": "mEthAmount",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
       },
       {
-        "name": "amount",
+        "name": "usdcAmount",
         "type": "uint256",
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "ProtocolFeeUpdated",
-    "inputs": [
+      },
       {
-        "name": "newFeeRate",
+        "name": "rwaAmount",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "timestamp",
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
@@ -920,29 +802,10 @@
   },
   {
     "type": "event",
-    "name": "SeniorRateUpdated",
+    "name": "StrategyInitialized",
     "inputs": [
       {
-        "name": "newRate",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "epochId",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "StrategyUpdated",
-    "inputs": [
-      {
-        "name": "newStrategy",
+        "name": "coreVault",
         "type": "address",
         "indexed": true,
         "internalType": "address"
@@ -952,79 +815,12 @@
   },
   {
     "type": "event",
-    "name": "Withdrawn",
+    "name": "YieldHarvested",
     "inputs": [
       {
-        "name": "user",
-        "type": "address",
-        "indexed": true,
-        "internalType": "address"
-      },
-      {
-        "name": "tranche",
-        "type": "uint8",
-        "indexed": true,
-        "internalType": "enum ICoreVault.TrancheType"
-      },
-      {
-        "name": "shares",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "amountReceived",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "epochId",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      }
-    ],
-    "anonymous": false
-  },
-  {
-    "type": "event",
-    "name": "YieldDistributed",
-    "inputs": [
-      {
-        "name": "epochId",
+        "name": "amount",
         "type": "uint256",
         "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "totalYield",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "seniorYield",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "juniorYield",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "juniorSlash",
-        "type": "uint256",
-        "indexed": false,
-        "internalType": "uint256"
-      },
-      {
-        "name": "protocolFee",
-        "type": "uint256",
-        "indexed": false,
         "internalType": "uint256"
       }
     ],
@@ -1058,27 +854,22 @@
   },
   {
     "type": "error",
-    "name": "EmergencyModeActive",
+    "name": "InsufficientBalance",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "InvalidFeeRate",
+    "name": "InvalidAllocation",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "InvalidRate",
+    "name": "NotCoreVault",
     "inputs": []
   },
   {
     "type": "error",
     "name": "NotInitialized",
-    "inputs": []
-  },
-  {
-    "type": "error",
-    "name": "NotTranche",
     "inputs": []
   },
   {
