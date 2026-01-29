@@ -102,6 +102,42 @@ async function main() {
     console.log('❌ EpochManager initialization failed:', (e as Error).message);
   }
 
+  // Wait between transactions
+  console.log('\nWaiting 10 seconds before next transaction...\n');
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+
+  // Grant KEEPER_ROLE to deployer
+  console.log('--- Granting KEEPER_ROLE ---');
+  try {
+    const KEEPER_ROLE =
+      '0x8972ffc6b90eca55e4e01e88a38e090782f47c5f07710cb6a076e12c89d44ce1' as const;
+
+    const hasRole = await epochManager.read.hasRole([
+      KEEPER_ROLE,
+      deployerAddress,
+    ]);
+    console.log(`Deployer has KEEPER_ROLE: ${hasRole}`);
+
+    if (!hasRole) {
+      console.log('Granting KEEPER_ROLE to deployer...');
+
+      const hash = await epochManager.write.grantRole([
+        KEEPER_ROLE,
+        deployerAddress,
+      ]);
+
+      console.log('Transaction hash:', hash);
+      console.log('Waiting for confirmation...');
+
+      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      console.log('✅ KEEPER_ROLE granted! Block:', receipt.blockNumber);
+    } else {
+      console.log('✅ Deployer already has KEEPER_ROLE');
+    }
+  } catch (e) {
+    console.log('❌ KEEPER_ROLE grant failed:', (e as Error).message);
+  }
+
   console.log('\n========================================');
   console.log('   Initialization Complete!');
   console.log('========================================');

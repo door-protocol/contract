@@ -27,6 +27,7 @@
   ],
   "main": "index.js",
   "scripts": {
+    "abi:extract": "ts-node scripts/extract-abis.ts",
     "anvil": "anvil",
     "clean": "hardhat clean && forge clean",
     "compile": "hardhat compile",
